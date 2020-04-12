@@ -17,8 +17,8 @@ class CategoryMapper {
         return categoryEntity.mapToDomain()
     }
 
-    fun listToDomain(categiesEntity: List<CategoryEntity>): List<Category> {
-        return categiesEntity.map { categoryEntity -> categoryEntity.mapToDomain() }
+    fun listToDomain(categoriesEntity: List<CategoryEntity>): List<Category> {
+        return categoriesEntity.map { categoryEntity -> categoryEntity.mapToDomain() }
     }
 
 }

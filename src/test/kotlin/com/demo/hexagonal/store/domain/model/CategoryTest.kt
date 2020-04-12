@@ -16,7 +16,7 @@ internal class CategoryTest {
                     description = null
             )
         }
-        assertEquals(MESSAGE_CATEGORY_NAME_REQUIRED, exception.message)
+        assertEquals(Category.MESSAGE_NAME_REQUIRED, exception.message)
     }
 
 }
