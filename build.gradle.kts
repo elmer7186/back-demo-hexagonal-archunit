@@ -73,3 +73,35 @@ val integrationTest = task<Test>("integrationTest") {
 tasks.check { dependsOn(integrationTest) }
 
 // END integration test configurations
+
+// START architecture test configurations
+
+sourceSets {
+    create("architecture-test") {
+        compileClasspath += sourceSets.main.get().output
+        runtimeClasspath += sourceSets.main.get().output
+    }
+}
+
+val architectureTestImplementation by configurations.getting {
+    extendsFrom(configurations.testImplementation.get())
+}
+
+configurations["architectureTestRuntimeOnly"].extendsFrom(configurations.runtimeOnly.get())
+
+dependencies {
+    architectureTestImplementation("com.tngtech.archunit:archunit-junit5:0.13.1")
+}
+
+val architectureTest = task<Test>("architectureTest") {
+    description = "Runs architecture tests."
+    group = "verification"
+
+    testClassesDirs = sourceSets["architecture-test"].output.classesDirs
+    classpath = sourceSets["architecture-test"].runtimeClasspath
+    shouldRunAfter("test")
+}
+
+tasks.check { dependsOn(architectureTest) }
+
+// END architecture test configurations
