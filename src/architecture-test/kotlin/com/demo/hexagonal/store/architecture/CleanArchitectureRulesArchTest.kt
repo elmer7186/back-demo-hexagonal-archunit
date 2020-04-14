@@ -3,20 +3,40 @@ package com.demo.hexagonal.store.architecture
 import com.tngtech.archunit.core.domain.JavaClasses
 import com.tngtech.archunit.junit.AnalyzeClasses
 import com.tngtech.archunit.junit.ArchTest
-import com.tngtech.archunit.library.Architectures
+import com.tngtech.archunit.lang.syntax.ArchRuleDefinition
+import com.tngtech.archunit.library.Architectures.layeredArchitecture
+
+private const val DOMAIN_LAYER = "domain"
+private const val APPLICATION_LAYER = "application"
+private const val INFRASTRUCTURE_LAYER = "infrastructure"
+private const val DOMAIN_PACKAGE = "com.demo.hexagonal.store.domain.."
+private const val APPLICATION_PACKAGE = "com.demo.hexagonal.store.application.."
+private const val INFRASTRUCTURE_PACKAGE = "com.demo.hexagonal.store.infrastructure.."
+private const val JAVA_RESORCES_PACKAGE = "java.."
+private const val KOTLIN_RESORCES_PACKAGE = "kotlin.."
+private const val JETBRAINS_RESORCES_PACKAGE = "org.jetbrains.."
 
 @AnalyzeClasses(packages = ["com.demo.hexagonal.store"])
 class CleanArchitectureRulesArchTest {
 
     @ArchTest
-    fun `Hexagonal layer definition`(javaClasses: JavaClasses) {
-        Architectures.layeredArchitecture().layer("domain")
-                .definedBy("com.demo.hexagonal.store.domain..")
-                .layer("application").definedBy("com.demo.hexagonal.store.application..")
-                .layer("infrastructure").definedBy("com.demo.hexagonal.store.infrastructure..")
-                .whereLayer("infrastructure").mayNotBeAccessedByAnyLayer()
-                .whereLayer("application").mayOnlyBeAccessedByLayers("infrastructure")
-                .whereLayer("domain").mayOnlyBeAccessedByLayers("infrastructure", "application")
+    fun `Hexagonal layer should protect clean standard`(javaClasses: JavaClasses) {
+        layeredArchitecture()
+                .layer(DOMAIN_LAYER).definedBy(DOMAIN_PACKAGE)
+                .layer(APPLICATION_LAYER).definedBy(APPLICATION_PACKAGE)
+                .layer(INFRASTRUCTURE_LAYER).definedBy(INFRASTRUCTURE_PACKAGE)
+                .whereLayer(INFRASTRUCTURE_LAYER).mayNotBeAccessedByAnyLayer()
+                .whereLayer(APPLICATION_LAYER).mayOnlyBeAccessedByLayers(INFRASTRUCTURE_LAYER)
+                .whereLayer(DOMAIN_LAYER).mayOnlyBeAccessedByLayers(INFRASTRUCTURE_LAYER,
+                        APPLICATION_LAYER)
+                .check(javaClasses)
+    }
+
+    @ArchTest
+    fun `Domain should not has external libraries`(javaClasses: JavaClasses) {
+        ArchRuleDefinition.classes().that().resideInAPackage(DOMAIN_PACKAGE)
+                .should().onlyDependOnClassesThat().resideInAnyPackage(JAVA_RESORCES_PACKAGE,
+                        KOTLIN_RESORCES_PACKAGE, DOMAIN_PACKAGE, JETBRAINS_RESORCES_PACKAGE)
                 .check(javaClasses)
     }
 
