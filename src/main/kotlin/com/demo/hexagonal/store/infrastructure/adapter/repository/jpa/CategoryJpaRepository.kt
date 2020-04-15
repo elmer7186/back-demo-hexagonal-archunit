@@ -5,4 +5,8 @@ import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-interface CategoryJpaRepository : JpaRepository<CategoryEntity, Int>
+interface CategoryJpaRepository : JpaRepository<CategoryEntity, Int> {
+
+    fun findByName(name: String): CategoryEntity?
+
+}

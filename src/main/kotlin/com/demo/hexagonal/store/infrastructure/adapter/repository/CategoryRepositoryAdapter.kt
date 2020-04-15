@@ -16,4 +16,12 @@ class CategoryRepositoryAdapter(
         return categoryMapper.listToDomain(categoryJpaRepository.findAll())
     }
 
+    override fun findByName(name: String): Category? {
+        return categoryJpaRepository.findByName(name)?.let { categoryMapper.toDomain(it) }
+    }
+
+    override fun save(category: Category) {
+        categoryJpaRepository.save(categoryMapper.toEntity(category))
+    }
+
 }

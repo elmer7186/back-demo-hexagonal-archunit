@@ -13,12 +13,22 @@ class CategoryMapper {
             description = description
     )
 
+    private fun Category.mapToEntity() = CategoryEntity(
+            id = id,
+            name = name,
+            description = description
+    )
+
     fun toDomain(categoryEntity: CategoryEntity): Category {
         return categoryEntity.mapToDomain()
     }
 
     fun listToDomain(categoriesEntity: List<CategoryEntity>): List<Category> {
         return categoriesEntity.map { categoryEntity -> categoryEntity.mapToDomain() }
+    }
+
+    fun toEntity(category: Category): CategoryEntity {
+        return category.mapToEntity()
     }
 
 }

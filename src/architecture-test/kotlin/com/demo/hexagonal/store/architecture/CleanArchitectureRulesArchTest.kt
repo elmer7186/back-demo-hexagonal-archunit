@@ -12,9 +12,9 @@ private const val INFRASTRUCTURE_LAYER = "infrastructure"
 private const val DOMAIN_PACKAGE = "com.demo.hexagonal.store.domain.."
 private const val APPLICATION_PACKAGE = "com.demo.hexagonal.store.application.."
 private const val INFRASTRUCTURE_PACKAGE = "com.demo.hexagonal.store.infrastructure.."
-private const val JAVA_RESORCES_PACKAGE = "java.."
-private const val KOTLIN_RESORCES_PACKAGE = "kotlin.."
-private const val JETBRAINS_RESORCES_PACKAGE = "org.jetbrains.."
+private const val JAVA_SOURCES_PACKAGE = "java.."
+private const val KOTLIN_SOURCES_PACKAGE = "kotlin.."
+private const val JETBRAINS_SOURCES_PACKAGE = "org.jetbrains.."
 
 @AnalyzeClasses(packages = ["com.demo.hexagonal.store"])
 class CleanArchitectureRulesArchTest {
@@ -35,8 +35,8 @@ class CleanArchitectureRulesArchTest {
     @ArchTest
     fun `Domain should not has external libraries`(javaClasses: JavaClasses) {
         ArchRuleDefinition.classes().that().resideInAPackage(DOMAIN_PACKAGE)
-                .should().onlyDependOnClassesThat().resideInAnyPackage(JAVA_RESORCES_PACKAGE,
-                        KOTLIN_RESORCES_PACKAGE, DOMAIN_PACKAGE, JETBRAINS_RESORCES_PACKAGE)
+                .should().onlyDependOnClassesThat().resideInAnyPackage(JAVA_SOURCES_PACKAGE,
+                        KOTLIN_SOURCES_PACKAGE, DOMAIN_PACKAGE, JETBRAINS_SOURCES_PACKAGE)
                 .check(javaClasses)
     }
 

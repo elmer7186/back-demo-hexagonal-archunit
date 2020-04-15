@@ -13,12 +13,22 @@ class CategoryAppMapper {
             description = description
     )
 
+    private fun CategoryDto.mapToDomain() = Category(
+            id = id,
+            name = name,
+            description = description
+    )
+
     fun toDto(category: Category): CategoryDto {
         return category.mapToDto()
     }
 
     fun listToDto(categories: List<Category>): List<CategoryDto> {
         return categories.map { category -> category.mapToDto() }
+    }
+
+    fun toDomain(categoryDto: CategoryDto): Category {
+        return categoryDto.mapToDomain()
     }
 
 }

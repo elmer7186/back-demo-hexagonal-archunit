@@ -10,7 +10,7 @@ class InfrastructureRulesArchTest {
 
     @ArchTest
     fun `Files in controller folder should ending with Controller`(javaClasses: JavaClasses) {
-        classes().that().resideInAPackage("..controller..")
+        classes().that().resideInAPackage("..controller")
                 .should().haveSimpleNameEndingWith("Controller").check(javaClasses)
     }
 
