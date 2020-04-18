@@ -5,7 +5,7 @@ import com.tngtech.archunit.junit.AnalyzeClasses
 import com.tngtech.archunit.junit.ArchTest
 import com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes
 
-@AnalyzeClasses(packages = ["com.demo.hexagonal.store.application"])
+@AnalyzeClasses(packages = ["src.main.kotlin.com.demo.hexagonal.store.application"])
 class ApplicationRulesArchTest {
 
     @ArchTest

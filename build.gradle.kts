@@ -43,65 +43,65 @@ tasks.withType<KotlinCompile> {
 // START integration test configurations
 
 sourceSets {
-    create("integration-test") {
+    create("test-integration") {
         compileClasspath += sourceSets.main.get().output
         runtimeClasspath += sourceSets.main.get().output
     }
 }
 
-val integrationTestImplementation by configurations.getting {
+val testIntegrationImplementation by configurations.getting {
     extendsFrom(configurations.testImplementation.get())
 }
 
-configurations["integrationTestRuntimeOnly"].extendsFrom(configurations.runtimeOnly.get())
+configurations["testIntegrationRuntimeOnly"].extendsFrom(configurations.runtimeOnly.get())
 
 dependencies {
-    integrationTestImplementation("org.springframework.boot:spring-boot-starter-test") {
+    testIntegrationImplementation("org.springframework.boot:spring-boot-starter-test") {
         exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
     }
 }
 
-val integrationTest = task<Test>("integrationTest") {
+val testIntegration = task<Test>("testIntegration") {
     description = "Runs integration tests."
     group = "verification"
 
-    testClassesDirs = sourceSets["integration-test"].output.classesDirs
-    classpath = sourceSets["integration-test"].runtimeClasspath
+    testClassesDirs = sourceSets["test-integration"].output.classesDirs
+    classpath = sourceSets["test-integration"].runtimeClasspath
     shouldRunAfter("test")
 }
 
-tasks.check { dependsOn(integrationTest) }
+tasks.check { dependsOn(testIntegration) }
 
 // END integration test configurations
 
 // START architecture test configurations
 
 sourceSets {
-    create("architecture-test") {
+    create("test-architecture") {
         compileClasspath += sourceSets.main.get().output
         runtimeClasspath += sourceSets.main.get().output
     }
 }
 
-val architectureTestImplementation by configurations.getting {
+val testArchitectureImplementation by configurations.getting {
     extendsFrom(configurations.testImplementation.get())
 }
 
-configurations["architectureTestRuntimeOnly"].extendsFrom(configurations.runtimeOnly.get())
+configurations["testArchitectureRuntimeOnly"].extendsFrom(configurations.runtimeOnly.get())
 
 dependencies {
-    architectureTestImplementation("com.tngtech.archunit:archunit-junit5:0.13.1")
+    testArchitectureImplementation("com.tngtech.archunit:archunit-junit5:0.13.1")
 }
 
-val architectureTest = task<Test>("architectureTest") {
+val testArchitecture = task<Test>("testArchitecture") {
     description = "Runs architecture tests."
     group = "verification"
 
-    testClassesDirs = sourceSets["architecture-test"].output.classesDirs
-    classpath = sourceSets["architecture-test"].runtimeClasspath
+    testClassesDirs = sourceSets["test-architecture"].output.classesDirs
+    classpath = sourceSets["test-architecture"].runtimeClasspath
     shouldRunAfter("test")
 }
 
-tasks.check { dependsOn(architectureTest) }
+tasks.check { dependsOn(testArchitecture) }
 
 // END architecture test configurations
